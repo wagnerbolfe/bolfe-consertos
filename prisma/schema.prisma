@@ -1,0 +1,109 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id            String    @id
+  name          String
+  email         String    @unique
+  emailVerified Boolean   @default(false)
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  accounts      Account[]
+  sessions      Session[]
+
+  @@map("user")
+}
+
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("account")
+}
+
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([identifier])
+  @@map("verification")
+}
+
+model clients {
+  id           BigInt    @id
+  name         String?   @db.VarChar(120)
+  contact      String?   @db.VarChar(80)
+  address      String?   @db.VarChar(120)
+  zipcode      String?   @db.VarChar(20)
+  neighborhood String?   @db.VarChar(120)
+  city         String?   @db.VarChar(120)
+  uf           String?   @db.VarChar(4)
+  phone        String?   @db.VarChar(40)
+  obs          String?
+  mobile       String?   @db.VarChar(40)
+  situation    Int?
+  createdAt    DateTime? @db.Timestamp(6)
+}
+
+model orders {
+  id        BigInt    @id
+  clientId  BigInt?
+  createdAt DateTime? @db.Timestamp(6)
+  situation BigInt?
+  washerId  BigInt?
+  device    String?   @db.VarChar(160)
+  brand     String?   @db.VarChar(160)
+  model     String?   @db.VarChar(160)
+  series    String?   @db.VarChar(160)
+  problem   String?
+  obs       String?   @db.VarChar(508)
+}
+
+model washers {
+  id          BigInt  @id
+  clientId    BigInt?
+  description String? @db.VarChar(160)
+  brand       String? @db.VarChar(160)
+  model       String? @db.VarChar(160)
+  series      String? @db.VarChar(160)
+  obs         String? @db.VarChar(508)
+}
