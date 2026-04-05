@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid } from "recharts";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid } from "recharts";
 import {
   Droplets,
   FileTextIcon,
@@ -115,7 +115,6 @@ export default function DashboardPage() {
       <div className="flex flex-1 flex-col gap-6 p-6">
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-bold tracking-tight">Início</h1>
-          <Button>Download</Button>
         </div>
 
         <div className="space-y-6">
@@ -209,7 +208,7 @@ export default function DashboardPage() {
               </CardHeader>
               <CardContent className="pl-2">
                 <ChartContainer config={chartConfig} className="h-87.5 w-full">
-                  <LineChart
+                  <BarChart
                     data={ordersData.slice(-Number(chartRange))}
                     margin={{ top: 10, right: 10, left: 0, bottom: 0 }}
                   >
@@ -227,17 +226,15 @@ export default function DashboardPage() {
                       tickFormatter={(v) => String(v)}
                     />
                     <ChartTooltip
-                      cursor={{ stroke: "var(--border)", strokeWidth: 1 }}
-                      content={<ChartTooltipContent indicator="dot" />}
+                      cursor={{ fill: "var(--border)", fillOpacity: 0.2 }}
+                      content={<ChartTooltipContent indicator="line" />}
                     />
-                    <Line
+                    <Bar
                       dataKey="total"
-                      stroke="var(--color-total)"
-                      strokeWidth={2}
-                      dot={false}
-                      activeDot={{ r: 4 }}
+                      fill="var(--color-total)"
+                      radius={[4, 4, 0, 0]}
                     />
-                  </LineChart>
+                  </BarChart>
                 </ChartContainer>
               </CardContent>
             </Card>
