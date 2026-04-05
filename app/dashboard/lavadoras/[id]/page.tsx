@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { useParams, useRouter } from "next/navigation";
-import { ArrowLeftIcon, BellIcon } from "lucide-react";
+import { ArrowLeftIcon } from "lucide-react";
 
 import {
   AlertDialog,
@@ -15,8 +15,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -123,24 +121,14 @@ export default function LavadoraPage() {
           </Button>
           <span className="text-sm text-muted-foreground">Lavadoras</span>
         </div>
-        <div className="flex items-center gap-2">
-          <Button variant="ghost" size="icon" className="relative">
-            <BellIcon className="h-4 w-4" />
-            <Badge className="absolute -right-1 -top-1 h-4 w-4 rounded-full p-0 flex items-center justify-center text-[10px]">
-              3
-            </Badge>
-          </Button>
-          <Avatar className="h-8 w-8">
-            <AvatarImage src="" alt="User" />
-            <AvatarFallback>AD</AvatarFallback>
-          </Avatar>
-        </div>
       </header>
 
       <div className="flex flex-1 items-start justify-center p-6">
         <Card className="w-full max-w-2xl shadow-md p-6 flex flex-col gap-6">
           <div className="flex items-center justify-between">
-            <h1 className="text-2xl font-bold tracking-tight">Lavadora #{id}</h1>
+            <h1 className="text-2xl font-bold tracking-tight">
+              Lavadora #{id}
+            </h1>
             <div className="flex gap-2">
               <AlertDialog>
                 <AlertDialogTrigger asChild>
@@ -152,12 +140,15 @@ export default function LavadoraPage() {
                   <AlertDialogHeader>
                     <AlertDialogTitle>Excluir lavadora?</AlertDialogTitle>
                     <AlertDialogDescription>
-                      Esta ação não pode ser desfeita. A lavadora será permanentemente removida.
+                      Esta ação não pode ser desfeita. A lavadora será
+                      permanentemente removida.
                     </AlertDialogDescription>
                   </AlertDialogHeader>
                   <AlertDialogFooter>
                     <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                    <AlertDialogAction onClick={handleDelete}>Excluir</AlertDialogAction>
+                    <AlertDialogAction onClick={handleDelete}>
+                      Excluir
+                    </AlertDialogAction>
                   </AlertDialogFooter>
                 </AlertDialogContent>
               </AlertDialog>

@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { useParams, useRouter } from "next/navigation";
-import { ArrowLeftIcon, BellIcon, SearchIcon } from "lucide-react";
+import { ArrowLeftIcon, SearchIcon } from "lucide-react";
 
 import {
   AlertDialog,
@@ -15,8 +15,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -42,7 +40,13 @@ import { Textarea } from "@/components/ui/textarea";
 const SITUATIONS = ["Aberta", "Em andamento", "Concluída", "Cancelada"];
 
 type Client = { id: string; name: string; phone: string; mobile: string };
-type Washer = { id: string; label: string; brand: string; model: string; series: string };
+type Washer = {
+  id: string;
+  label: string;
+  brand: string;
+  model: string;
+  series: string;
+};
 
 type OrderForm = {
   clientId: string;
@@ -101,14 +105,25 @@ export default function OrdemPage() {
       .then((r) => r.json())
       .then((data) =>
         setWashers(
-          (data.washers ?? []).map((w: { id: string; description: string; brand: string; model: string; series: string }) => ({
-            id: w.id,
-            label: w.description || [w.brand, w.model].filter(Boolean).join(" - ") || `#${w.id}`,
-            brand: w.brand,
-            model: w.model,
-            series: w.series,
-          }))
-        )
+          (data.washers ?? []).map(
+            (w: {
+              id: string;
+              description: string;
+              brand: string;
+              model: string;
+              series: string;
+            }) => ({
+              id: w.id,
+              label:
+                w.description ||
+                [w.brand, w.model].filter(Boolean).join(" - ") ||
+                `#${w.id}`,
+              brand: w.brand,
+              model: w.model,
+              series: w.series,
+            }),
+          ),
+        ),
       )
       .catch(() => {});
   }, [form.clientId, isNew]);
@@ -139,7 +154,6 @@ export default function OrdemPage() {
       })
       .catch(() => setLoading(false));
   }, [id, isNew]);
-
 
   function openClientModal() {
     setClientModalOpen(true);
@@ -203,7 +217,7 @@ export default function OrdemPage() {
   }
 
   const filteredClients = clients.filter((c) =>
-    c.name?.toLowerCase().includes(clientSearch.toLowerCase())
+    c.name?.toLowerCase().includes(clientSearch.toLowerCase()),
   );
 
   return (
@@ -220,18 +234,6 @@ export default function OrdemPage() {
             <ArrowLeftIcon className="h-4 w-4" />
           </Button>
           <span className="text-sm text-muted-foreground">Ordens</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <Button variant="ghost" size="icon" className="relative">
-            <BellIcon className="h-4 w-4" />
-            <Badge className="absolute -right-1 -top-1 h-4 w-4 rounded-full p-0 flex items-center justify-center text-[10px]">
-              3
-            </Badge>
-          </Button>
-          <Avatar className="h-8 w-8">
-            <AvatarImage src="" alt="User" />
-            <AvatarFallback>AD</AvatarFallback>
-          </Avatar>
         </div>
       </header>
 
@@ -253,12 +255,15 @@ export default function OrdemPage() {
                     <AlertDialogHeader>
                       <AlertDialogTitle>Excluir ordem?</AlertDialogTitle>
                       <AlertDialogDescription>
-                        Esta ação não pode ser desfeita. A ordem será permanentemente removida.
+                        Esta ação não pode ser desfeita. A ordem será
+                        permanentemente removida.
                       </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
                       <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                      <AlertDialogAction onClick={handleDelete}>Excluir</AlertDialogAction>
+                      <AlertDialogAction onClick={handleDelete}>
+                        Excluir
+                      </AlertDialogAction>
                     </AlertDialogFooter>
                   </AlertDialogContent>
                 </AlertDialog>
@@ -312,7 +317,13 @@ export default function OrdemPage() {
                     disabled={!form.clientId}
                   >
                     <SelectTrigger id="washerId" className="w-full">
-                      <SelectValue placeholder={form.clientId ? "Selecione a lavadora" : "Selecione um cliente primeiro"} />
+                      <SelectValue
+                        placeholder={
+                          form.clientId
+                            ? "Selecione a lavadora"
+                            : "Selecione um cliente primeiro"
+                        }
+                      />
                     </SelectTrigger>
                     <SelectContent>
                       {washers.map((w) => (
@@ -429,7 +440,9 @@ export default function OrdemPage() {
                 <Skeleton key={i} className="h-10 w-full" />
               ))
             ) : filteredClients.length === 0 ? (
-              <p className="text-sm text-muted-foreground text-center py-4">Nenhum cliente encontrado.</p>
+              <p className="text-sm text-muted-foreground text-center py-4">
+                Nenhum cliente encontrado.
+              </p>
             ) : (
               filteredClients.map((c) => (
                 <button
@@ -438,7 +451,9 @@ export default function OrdemPage() {
                   onClick={() => selectClient(c)}
                 >
                   <span className="font-medium">{c.name}</span>
-                  <span className="text-muted-foreground text-xs">{c.phone || c.mobile || ""}</span>
+                  <span className="text-muted-foreground text-xs">
+                    {c.phone || c.mobile || ""}
+                  </span>
                 </button>
               ))
             )}

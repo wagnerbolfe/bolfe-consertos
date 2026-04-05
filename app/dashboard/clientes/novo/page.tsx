@@ -2,10 +2,7 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
-import { ArrowLeftIcon, BellIcon } from "lucide-react";
-
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
+import { ArrowLeftIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -73,18 +70,6 @@ export default function NovoClientePage() {
             <ArrowLeftIcon className="h-4 w-4" />
           </Button>
           <span className="text-sm text-muted-foreground">Clientes</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <Button variant="ghost" size="icon" className="relative">
-            <BellIcon className="h-4 w-4" />
-            <Badge className="absolute -right-1 -top-1 h-4 w-4 rounded-full p-0 flex items-center justify-center text-[10px]">
-              3
-            </Badge>
-          </Button>
-          <Avatar className="h-8 w-8">
-            <AvatarImage src="" alt="User" />
-            <AvatarFallback>AD</AvatarFallback>
-          </Avatar>
         </div>
       </header>
 

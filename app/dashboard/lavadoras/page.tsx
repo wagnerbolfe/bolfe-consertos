@@ -2,11 +2,8 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
-import { BellIcon, SearchIcon } from "lucide-react";
+import { SearchIcon } from "lucide-react";
 import { useDebounce } from "@/lib/use-debounce";
-
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -90,18 +87,6 @@ export default function LavadorasPage() {
         <SidebarTrigger className="-ml-1" />
         <Separator orientation="vertical" className="h-4" />
         <div className="flex flex-1" />
-        <div className="flex items-center gap-2">
-          <Button variant="ghost" size="icon" className="relative">
-            <BellIcon className="h-4 w-4" />
-            <Badge className="absolute -right-1 -top-1 h-4 w-4 rounded-full p-0 flex items-center justify-center text-[10px]">
-              3
-            </Badge>
-          </Button>
-          <Avatar className="h-8 w-8">
-            <AvatarImage src="" alt="User" />
-            <AvatarFallback>AD</AvatarFallback>
-          </Avatar>
-        </div>
       </header>
 
       <div className="flex flex-1 flex-col gap-6 p-6">
