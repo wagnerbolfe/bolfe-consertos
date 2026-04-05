@@ -177,7 +177,8 @@ export const WashersScalarFieldEnum = {
   brand: 'brand',
   model: 'model',
   series: 'series',
-  obs: 'obs'
+  obs: 'obs',
+  createdAt: 'createdAt'
 } as const
 
 export type WashersScalarFieldEnum = (typeof WashersScalarFieldEnum)[keyof typeof WashersScalarFieldEnum]

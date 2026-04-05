@@ -82,6 +82,8 @@ model clients {
   mobile       String?   @db.VarChar(40)
   situation    Int?
   createdAt    DateTime? @db.Timestamp(6)
+  washers      washers[]
+  orders       orders[]
 }
 
 model orders {
@@ -96,14 +98,19 @@ model orders {
   series    String?   @db.VarChar(160)
   problem   String?
   obs       String?   @db.VarChar(508)
+  client    clients?  @relation(fields: [clientId], references: [id])
+  washer    washers?  @relation(fields: [washerId], references: [id])
 }
 
 model washers {
-  id          BigInt  @id
+  id          BigInt    @id
   clientId    BigInt?
-  description String? @db.VarChar(160)
-  brand       String? @db.VarChar(160)
-  model       String? @db.VarChar(160)
-  series      String? @db.VarChar(160)
-  obs         String? @db.VarChar(508)
+  description String?   @db.VarChar(160)
+  brand       String?   @db.VarChar(160)
+  model       String?   @db.VarChar(160)
+  series      String?   @db.VarChar(160)
+  obs         String?   @db.VarChar(508)
+  createdAt   DateTime? @db.Timestamp(6)
+  client      clients?  @relation(fields: [clientId], references: [id])
+  orders      orders[]
 }

@@ -44,6 +44,7 @@ export type WashersMinAggregateOutputType = {
   model: string | null
   series: string | null
   obs: string | null
+  createdAt: Date | null
 }
 
 export type WashersMaxAggregateOutputType = {
@@ -54,6 +55,7 @@ export type WashersMaxAggregateOutputType = {
   model: string | null
   series: string | null
   obs: string | null
+  createdAt: Date | null
 }
 
 export type WashersCountAggregateOutputType = {
@@ -64,6 +66,7 @@ export type WashersCountAggregateOutputType = {
   model: number
   series: number
   obs: number
+  createdAt: number
   _all: number
 }
 
@@ -86,6 +89,7 @@ export type WashersMinAggregateInputType = {
   model?: true
   series?: true
   obs?: true
+  createdAt?: true
 }
 
 export type WashersMaxAggregateInputType = {
@@ -96,6 +100,7 @@ export type WashersMaxAggregateInputType = {
   model?: true
   series?: true
   obs?: true
+  createdAt?: true
 }
 
 export type WashersCountAggregateInputType = {
@@ -106,6 +111,7 @@ export type WashersCountAggregateInputType = {
   model?: true
   series?: true
   obs?: true
+  createdAt?: true
   _all?: true
 }
 
@@ -203,6 +209,7 @@ export type WashersGroupByOutputType = {
   model: string | null
   series: string | null
   obs: string | null
+  createdAt: Date | null
   _count: WashersCountAggregateOutputType | null
   _avg: WashersAvgAggregateOutputType | null
   _sum: WashersSumAggregateOutputType | null
@@ -236,6 +243,9 @@ export type washersWhereInput = {
   model?: Prisma.StringNullableFilter<"washers"> | string | null
   series?: Prisma.StringNullableFilter<"washers"> | string | null
   obs?: Prisma.StringNullableFilter<"washers"> | string | null
+  createdAt?: Prisma.DateTimeNullableFilter<"washers"> | Date | string | null
+  client?: Prisma.XOR<Prisma.ClientsNullableScalarRelationFilter, Prisma.clientsWhereInput> | null
+  orders?: Prisma.OrdersListRelationFilter
 }
 
 export type washersOrderByWithRelationInput = {
@@ -246,6 +256,9 @@ export type washersOrderByWithRelationInput = {
   model?: Prisma.SortOrderInput | Prisma.SortOrder
   series?: Prisma.SortOrderInput | Prisma.SortOrder
   obs?: Prisma.SortOrderInput | Prisma.SortOrder
+  createdAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  client?: Prisma.clientsOrderByWithRelationInput
+  orders?: Prisma.ordersOrderByRelationAggregateInput
 }
 
 export type washersWhereUniqueInput = Prisma.AtLeast<{
@@ -259,6 +272,9 @@ export type washersWhereUniqueInput = Prisma.AtLeast<{
   model?: Prisma.StringNullableFilter<"washers"> | string | null
   series?: Prisma.StringNullableFilter<"washers"> | string | null
   obs?: Prisma.StringNullableFilter<"washers"> | string | null
+  createdAt?: Prisma.DateTimeNullableFilter<"washers"> | Date | string | null
+  client?: Prisma.XOR<Prisma.ClientsNullableScalarRelationFilter, Prisma.clientsWhereInput> | null
+  orders?: Prisma.OrdersListRelationFilter
 }, "id">
 
 export type washersOrderByWithAggregationInput = {
@@ -269,6 +285,7 @@ export type washersOrderByWithAggregationInput = {
   model?: Prisma.SortOrderInput | Prisma.SortOrder
   series?: Prisma.SortOrderInput | Prisma.SortOrder
   obs?: Prisma.SortOrderInput | Prisma.SortOrder
+  createdAt?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.washersCountOrderByAggregateInput
   _avg?: Prisma.washersAvgOrderByAggregateInput
   _max?: Prisma.washersMaxOrderByAggregateInput
@@ -287,16 +304,19 @@ export type washersScalarWhereWithAggregatesInput = {
   model?: Prisma.StringNullableWithAggregatesFilter<"washers"> | string | null
   series?: Prisma.StringNullableWithAggregatesFilter<"washers"> | string | null
   obs?: Prisma.StringNullableWithAggregatesFilter<"washers"> | string | null
+  createdAt?: Prisma.DateTimeNullableWithAggregatesFilter<"washers"> | Date | string | null
 }
 
 export type washersCreateInput = {
   id: bigint | number
-  clientId?: bigint | number | null
   description?: string | null
   brand?: string | null
   model?: string | null
   series?: string | null
   obs?: string | null
+  createdAt?: Date | string | null
+  client?: Prisma.clientsCreateNestedOneWithoutWashersInput
+  orders?: Prisma.ordersCreateNestedManyWithoutWasherInput
 }
 
 export type washersUncheckedCreateInput = {
@@ -307,16 +327,20 @@ export type washersUncheckedCreateInput = {
   model?: string | null
   series?: string | null
   obs?: string | null
+  createdAt?: Date | string | null
+  orders?: Prisma.ordersUncheckedCreateNestedManyWithoutWasherInput
 }
 
 export type washersUpdateInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  clientId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   brand?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   model?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   series?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   obs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  client?: Prisma.clientsUpdateOneWithoutWashersNestedInput
+  orders?: Prisma.ordersUpdateManyWithoutWasherNestedInput
 }
 
 export type washersUncheckedUpdateInput = {
@@ -327,6 +351,8 @@ export type washersUncheckedUpdateInput = {
   model?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   series?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   obs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  orders?: Prisma.ordersUncheckedUpdateManyWithoutWasherNestedInput
 }
 
 export type washersCreateManyInput = {
@@ -337,16 +363,17 @@ export type washersCreateManyInput = {
   model?: string | null
   series?: string | null
   obs?: string | null
+  createdAt?: Date | string | null
 }
 
 export type washersUpdateManyMutationInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  clientId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   brand?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   model?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   series?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   obs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type washersUncheckedUpdateManyInput = {
@@ -357,6 +384,22 @@ export type washersUncheckedUpdateManyInput = {
   model?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   series?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   obs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+}
+
+export type WashersListRelationFilter = {
+  every?: Prisma.washersWhereInput
+  some?: Prisma.washersWhereInput
+  none?: Prisma.washersWhereInput
+}
+
+export type washersOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
+}
+
+export type WashersNullableScalarRelationFilter = {
+  is?: Prisma.washersWhereInput | null
+  isNot?: Prisma.washersWhereInput | null
 }
 
 export type washersCountOrderByAggregateInput = {
@@ -367,6 +410,7 @@ export type washersCountOrderByAggregateInput = {
   model?: Prisma.SortOrder
   series?: Prisma.SortOrder
   obs?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
 }
 
 export type washersAvgOrderByAggregateInput = {
@@ -382,6 +426,7 @@ export type washersMaxOrderByAggregateInput = {
   model?: Prisma.SortOrder
   series?: Prisma.SortOrder
   obs?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
 }
 
 export type washersMinOrderByAggregateInput = {
@@ -392,6 +437,7 @@ export type washersMinOrderByAggregateInput = {
   model?: Prisma.SortOrder
   series?: Prisma.SortOrder
   obs?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
 }
 
 export type washersSumOrderByAggregateInput = {
@@ -399,6 +445,257 @@ export type washersSumOrderByAggregateInput = {
   clientId?: Prisma.SortOrder
 }
 
+export type washersCreateNestedManyWithoutClientInput = {
+  create?: Prisma.XOR<Prisma.washersCreateWithoutClientInput, Prisma.washersUncheckedCreateWithoutClientInput> | Prisma.washersCreateWithoutClientInput[] | Prisma.washersUncheckedCreateWithoutClientInput[]
+  connectOrCreate?: Prisma.washersCreateOrConnectWithoutClientInput | Prisma.washersCreateOrConnectWithoutClientInput[]
+  createMany?: Prisma.washersCreateManyClientInputEnvelope
+  connect?: Prisma.washersWhereUniqueInput | Prisma.washersWhereUniqueInput[]
+}
+
+export type washersUncheckedCreateNestedManyWithoutClientInput = {
+  create?: Prisma.XOR<Prisma.washersCreateWithoutClientInput, Prisma.washersUncheckedCreateWithoutClientInput> | Prisma.washersCreateWithoutClientInput[] | Prisma.washersUncheckedCreateWithoutClientInput[]
+  connectOrCreate?: Prisma.washersCreateOrConnectWithoutClientInput | Prisma.washersCreateOrConnectWithoutClientInput[]
+  createMany?: Prisma.washersCreateManyClientInputEnvelope
+  connect?: Prisma.washersWhereUniqueInput | Prisma.washersWhereUniqueInput[]
+}
+
+export type washersUpdateManyWithoutClientNestedInput = {
+  create?: Prisma.XOR<Prisma.washersCreateWithoutClientInput, Prisma.washersUncheckedCreateWithoutClientInput> | Prisma.washersCreateWithoutClientInput[] | Prisma.washersUncheckedCreateWithoutClientInput[]
+  connectOrCreate?: Prisma.washersCreateOrConnectWithoutClientInput | Prisma.washersCreateOrConnectWithoutClientInput[]
+  upsert?: Prisma.washersUpsertWithWhereUniqueWithoutClientInput | Prisma.washersUpsertWithWhereUniqueWithoutClientInput[]
+  createMany?: Prisma.washersCreateManyClientInputEnvelope
+  set?: Prisma.washersWhereUniqueInput | Prisma.washersWhereUniqueInput[]
+  disconnect?: Prisma.washersWhereUniqueInput | Prisma.washersWhereUniqueInput[]
+  delete?: Prisma.washersWhereUniqueInput | Prisma.washersWhereUniqueInput[]
+  connect?: Prisma.washersWhereUniqueInput | Prisma.washersWhereUniqueInput[]
+  update?: Prisma.washersUpdateWithWhereUniqueWithoutClientInput | Prisma.washersUpdateWithWhereUniqueWithoutClientInput[]
+  updateMany?: Prisma.washersUpdateManyWithWhereWithoutClientInput | Prisma.washersUpdateManyWithWhereWithoutClientInput[]
+  deleteMany?: Prisma.washersScalarWhereInput | Prisma.washersScalarWhereInput[]
+}
+
+export type washersUncheckedUpdateManyWithoutClientNestedInput = {
+  create?: Prisma.XOR<Prisma.washersCreateWithoutClientInput, Prisma.washersUncheckedCreateWithoutClientInput> | Prisma.washersCreateWithoutClientInput[] | Prisma.washersUncheckedCreateWithoutClientInput[]
+  connectOrCreate?: Prisma.washersCreateOrConnectWithoutClientInput | Prisma.washersCreateOrConnectWithoutClientInput[]
+  upsert?: Prisma.washersUpsertWithWhereUniqueWithoutClientInput | Prisma.washersUpsertWithWhereUniqueWithoutClientInput[]
+  createMany?: Prisma.washersCreateManyClientInputEnvelope
+  set?: Prisma.washersWhereUniqueInput | Prisma.washersWhereUniqueInput[]
+  disconnect?: Prisma.washersWhereUniqueInput | Prisma.washersWhereUniqueInput[]
+  delete?: Prisma.washersWhereUniqueInput | Prisma.washersWhereUniqueInput[]
+  connect?: Prisma.washersWhereUniqueInput | Prisma.washersWhereUniqueInput[]
+  update?: Prisma.washersUpdateWithWhereUniqueWithoutClientInput | Prisma.washersUpdateWithWhereUniqueWithoutClientInput[]
+  updateMany?: Prisma.washersUpdateManyWithWhereWithoutClientInput | Prisma.washersUpdateManyWithWhereWithoutClientInput[]
+  deleteMany?: Prisma.washersScalarWhereInput | Prisma.washersScalarWhereInput[]
+}
+
+export type washersCreateNestedOneWithoutOrdersInput = {
+  create?: Prisma.XOR<Prisma.washersCreateWithoutOrdersInput, Prisma.washersUncheckedCreateWithoutOrdersInput>
+  connectOrCreate?: Prisma.washersCreateOrConnectWithoutOrdersInput
+  connect?: Prisma.washersWhereUniqueInput
+}
+
+export type washersUpdateOneWithoutOrdersNestedInput = {
+  create?: Prisma.XOR<Prisma.washersCreateWithoutOrdersInput, Prisma.washersUncheckedCreateWithoutOrdersInput>
+  connectOrCreate?: Prisma.washersCreateOrConnectWithoutOrdersInput
+  upsert?: Prisma.washersUpsertWithoutOrdersInput
+  disconnect?: Prisma.washersWhereInput | boolean
+  delete?: Prisma.washersWhereInput | boolean
+  connect?: Prisma.washersWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.washersUpdateToOneWithWhereWithoutOrdersInput, Prisma.washersUpdateWithoutOrdersInput>, Prisma.washersUncheckedUpdateWithoutOrdersInput>
+}
+
+export type washersCreateWithoutClientInput = {
+  id: bigint | number
+  description?: string | null
+  brand?: string | null
+  model?: string | null
+  series?: string | null
+  obs?: string | null
+  createdAt?: Date | string | null
+  orders?: Prisma.ordersCreateNestedManyWithoutWasherInput
+}
+
+export type washersUncheckedCreateWithoutClientInput = {
+  id: bigint | number
+  description?: string | null
+  brand?: string | null
+  model?: string | null
+  series?: string | null
+  obs?: string | null
+  createdAt?: Date | string | null
+  orders?: Prisma.ordersUncheckedCreateNestedManyWithoutWasherInput
+}
+
+export type washersCreateOrConnectWithoutClientInput = {
+  where: Prisma.washersWhereUniqueInput
+  create: Prisma.XOR<Prisma.washersCreateWithoutClientInput, Prisma.washersUncheckedCreateWithoutClientInput>
+}
+
+export type washersCreateManyClientInputEnvelope = {
+  data: Prisma.washersCreateManyClientInput | Prisma.washersCreateManyClientInput[]
+  skipDuplicates?: boolean
+}
+
+export type washersUpsertWithWhereUniqueWithoutClientInput = {
+  where: Prisma.washersWhereUniqueInput
+  update: Prisma.XOR<Prisma.washersUpdateWithoutClientInput, Prisma.washersUncheckedUpdateWithoutClientInput>
+  create: Prisma.XOR<Prisma.washersCreateWithoutClientInput, Prisma.washersUncheckedCreateWithoutClientInput>
+}
+
+export type washersUpdateWithWhereUniqueWithoutClientInput = {
+  where: Prisma.washersWhereUniqueInput
+  data: Prisma.XOR<Prisma.washersUpdateWithoutClientInput, Prisma.washersUncheckedUpdateWithoutClientInput>
+}
+
+export type washersUpdateManyWithWhereWithoutClientInput = {
+  where: Prisma.washersScalarWhereInput
+  data: Prisma.XOR<Prisma.washersUpdateManyMutationInput, Prisma.washersUncheckedUpdateManyWithoutClientInput>
+}
+
+export type washersScalarWhereInput = {
+  AND?: Prisma.washersScalarWhereInput | Prisma.washersScalarWhereInput[]
+  OR?: Prisma.washersScalarWhereInput[]
+  NOT?: Prisma.washersScalarWhereInput | Prisma.washersScalarWhereInput[]
+  id?: Prisma.BigIntFilter<"washers"> | bigint | number
+  clientId?: Prisma.BigIntNullableFilter<"washers"> | bigint | number | null
+  description?: Prisma.StringNullableFilter<"washers"> | string | null
+  brand?: Prisma.StringNullableFilter<"washers"> | string | null
+  model?: Prisma.StringNullableFilter<"washers"> | string | null
+  series?: Prisma.StringNullableFilter<"washers"> | string | null
+  obs?: Prisma.StringNullableFilter<"washers"> | string | null
+  createdAt?: Prisma.DateTimeNullableFilter<"washers"> | Date | string | null
+}
+
+export type washersCreateWithoutOrdersInput = {
+  id: bigint | number
+  description?: string | null
+  brand?: string | null
+  model?: string | null
+  series?: string | null
+  obs?: string | null
+  createdAt?: Date | string | null
+  client?: Prisma.clientsCreateNestedOneWithoutWashersInput
+}
+
+export type washersUncheckedCreateWithoutOrdersInput = {
+  id: bigint | number
+  clientId?: bigint | number | null
+  description?: string | null
+  brand?: string | null
+  model?: string | null
+  series?: string | null
+  obs?: string | null
+  createdAt?: Date | string | null
+}
+
+export type washersCreateOrConnectWithoutOrdersInput = {
+  where: Prisma.washersWhereUniqueInput
+  create: Prisma.XOR<Prisma.washersCreateWithoutOrdersInput, Prisma.washersUncheckedCreateWithoutOrdersInput>
+}
+
+export type washersUpsertWithoutOrdersInput = {
+  update: Prisma.XOR<Prisma.washersUpdateWithoutOrdersInput, Prisma.washersUncheckedUpdateWithoutOrdersInput>
+  create: Prisma.XOR<Prisma.washersCreateWithoutOrdersInput, Prisma.washersUncheckedCreateWithoutOrdersInput>
+  where?: Prisma.washersWhereInput
+}
+
+export type washersUpdateToOneWithWhereWithoutOrdersInput = {
+  where?: Prisma.washersWhereInput
+  data: Prisma.XOR<Prisma.washersUpdateWithoutOrdersInput, Prisma.washersUncheckedUpdateWithoutOrdersInput>
+}
+
+export type washersUpdateWithoutOrdersInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  brand?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  model?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  series?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  obs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  client?: Prisma.clientsUpdateOneWithoutWashersNestedInput
+}
+
+export type washersUncheckedUpdateWithoutOrdersInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  clientId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  brand?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  model?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  series?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  obs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+}
+
+export type washersCreateManyClientInput = {
+  id: bigint | number
+  description?: string | null
+  brand?: string | null
+  model?: string | null
+  series?: string | null
+  obs?: string | null
+  createdAt?: Date | string | null
+}
+
+export type washersUpdateWithoutClientInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  brand?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  model?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  series?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  obs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  orders?: Prisma.ordersUpdateManyWithoutWasherNestedInput
+}
+
+export type washersUncheckedUpdateWithoutClientInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  brand?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  model?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  series?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  obs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  orders?: Prisma.ordersUncheckedUpdateManyWithoutWasherNestedInput
+}
+
+export type washersUncheckedUpdateManyWithoutClientInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  brand?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  model?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  series?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  obs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+}
+
+
+/**
+ * Count Type WashersCountOutputType
+ */
+
+export type WashersCountOutputType = {
+  orders: number
+}
+
+export type WashersCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  orders?: boolean | WashersCountOutputTypeCountOrdersArgs
+}
+
+/**
+ * WashersCountOutputType without action
+ */
+export type WashersCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the WashersCountOutputType
+   */
+  select?: Prisma.WashersCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * WashersCountOutputType without action
+ */
+export type WashersCountOutputTypeCountOrdersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ordersWhereInput
+}
 
 
 export type washersSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -409,6 +706,10 @@ export type washersSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   model?: boolean
   series?: boolean
   obs?: boolean
+  createdAt?: boolean
+  client?: boolean | Prisma.washers$clientArgs<ExtArgs>
+  orders?: boolean | Prisma.washers$ordersArgs<ExtArgs>
+  _count?: boolean | Prisma.WashersCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["washers"]>
 
 export type washersSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -419,6 +720,8 @@ export type washersSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   model?: boolean
   series?: boolean
   obs?: boolean
+  createdAt?: boolean
+  client?: boolean | Prisma.washers$clientArgs<ExtArgs>
 }, ExtArgs["result"]["washers"]>
 
 export type washersSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -429,6 +732,8 @@ export type washersSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   model?: boolean
   series?: boolean
   obs?: boolean
+  createdAt?: boolean
+  client?: boolean | Prisma.washers$clientArgs<ExtArgs>
 }, ExtArgs["result"]["washers"]>
 
 export type washersSelectScalar = {
@@ -439,13 +744,28 @@ export type washersSelectScalar = {
   model?: boolean
   series?: boolean
   obs?: boolean
+  createdAt?: boolean
 }
 
-export type washersOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "clientId" | "description" | "brand" | "model" | "series" | "obs", ExtArgs["result"]["washers"]>
+export type washersOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "clientId" | "description" | "brand" | "model" | "series" | "obs" | "createdAt", ExtArgs["result"]["washers"]>
+export type washersInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  client?: boolean | Prisma.washers$clientArgs<ExtArgs>
+  orders?: boolean | Prisma.washers$ordersArgs<ExtArgs>
+  _count?: boolean | Prisma.WashersCountOutputTypeDefaultArgs<ExtArgs>
+}
+export type washersIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  client?: boolean | Prisma.washers$clientArgs<ExtArgs>
+}
+export type washersIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  client?: boolean | Prisma.washers$clientArgs<ExtArgs>
+}
 
 export type $washersPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "washers"
-  objects: {}
+  objects: {
+    client: Prisma.$clientsPayload<ExtArgs> | null
+    orders: Prisma.$ordersPayload<ExtArgs>[]
+  }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: bigint
     clientId: bigint | null
@@ -454,6 +774,7 @@ export type $washersPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     model: string | null
     series: string | null
     obs: string | null
+    createdAt: Date | null
   }, ExtArgs["result"]["washers"]>
   composites: {}
 }
@@ -848,6 +1169,8 @@ readonly fields: washersFieldRefs;
  */
 export interface Prisma__washersClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  client<T extends Prisma.washers$clientArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.washers$clientArgs<ExtArgs>>): Prisma.Prisma__clientsClient<runtime.Types.Result.GetResult<Prisma.$clientsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  orders<T extends Prisma.washers$ordersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.washers$ordersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ordersPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -884,6 +1207,7 @@ export interface washersFieldRefs {
   readonly model: Prisma.FieldRef<"washers", 'String'>
   readonly series: Prisma.FieldRef<"washers", 'String'>
   readonly obs: Prisma.FieldRef<"washers", 'String'>
+  readonly createdAt: Prisma.FieldRef<"washers", 'DateTime'>
 }
     
 
@@ -900,6 +1224,10 @@ export type washersFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * Omit specific fields from the washers
    */
   omit?: Prisma.washersOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.washersInclude<ExtArgs> | null
   /**
    * Filter, which washers to fetch.
    */
@@ -919,6 +1247,10 @@ export type washersFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extension
    */
   omit?: Prisma.washersOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.washersInclude<ExtArgs> | null
+  /**
    * Filter, which washers to fetch.
    */
   where: Prisma.washersWhereUniqueInput
@@ -936,6 +1268,10 @@ export type washersFindFirstArgs<ExtArgs extends runtime.Types.Extensions.Intern
    * Omit specific fields from the washers
    */
   omit?: Prisma.washersOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.washersInclude<ExtArgs> | null
   /**
    * Filter, which washers to fetch.
    */
@@ -985,6 +1321,10 @@ export type washersFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions
    */
   omit?: Prisma.washersOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.washersInclude<ExtArgs> | null
+  /**
    * Filter, which washers to fetch.
    */
   where?: Prisma.washersWhereInput
@@ -1032,6 +1372,10 @@ export type washersFindManyArgs<ExtArgs extends runtime.Types.Extensions.Interna
    * Omit specific fields from the washers
    */
   omit?: Prisma.washersOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.washersInclude<ExtArgs> | null
   /**
    * Filter, which washers to fetch.
    */
@@ -1081,6 +1425,10 @@ export type washersCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalA
    */
   omit?: Prisma.washersOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.washersInclude<ExtArgs> | null
+  /**
    * The data needed to create a washers.
    */
   data: Prisma.XOR<Prisma.washersCreateInput, Prisma.washersUncheckedCreateInput>
@@ -1114,6 +1462,10 @@ export type washersCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensi
    */
   data: Prisma.washersCreateManyInput | Prisma.washersCreateManyInput[]
   skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.washersIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1128,6 +1480,10 @@ export type washersUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalA
    * Omit specific fields from the washers
    */
   omit?: Prisma.washersOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.washersInclude<ExtArgs> | null
   /**
    * The data needed to update a washers.
    */
@@ -1180,6 +1536,10 @@ export type washersUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensi
    * Limit how many washers to update.
    */
   limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.washersIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1194,6 +1554,10 @@ export type washersUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalA
    * Omit specific fields from the washers
    */
   omit?: Prisma.washersOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.washersInclude<ExtArgs> | null
   /**
    * The filter to search for the washers to update in case it exists.
    */
@@ -1221,6 +1585,10 @@ export type washersDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalA
    */
   omit?: Prisma.washersOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.washersInclude<ExtArgs> | null
+  /**
    * Filter which washers to delete.
    */
   where: Prisma.washersWhereUniqueInput
@@ -1241,6 +1609,49 @@ export type washersDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Inter
 }
 
 /**
+ * washers.client
+ */
+export type washers$clientArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the clients
+   */
+  select?: Prisma.clientsSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the clients
+   */
+  omit?: Prisma.clientsOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.clientsInclude<ExtArgs> | null
+  where?: Prisma.clientsWhereInput
+}
+
+/**
+ * washers.orders
+ */
+export type washers$ordersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the orders
+   */
+  select?: Prisma.ordersSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the orders
+   */
+  omit?: Prisma.ordersOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ordersInclude<ExtArgs> | null
+  where?: Prisma.ordersWhereInput
+  orderBy?: Prisma.ordersOrderByWithRelationInput | Prisma.ordersOrderByWithRelationInput[]
+  cursor?: Prisma.ordersWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.OrdersScalarFieldEnum | Prisma.OrdersScalarFieldEnum[]
+}
+
+/**
  * washers without action
  */
 export type washersDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1252,4 +1663,8 @@ export type washersDefaultArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * Omit specific fields from the washers
    */
   omit?: Prisma.washersOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.washersInclude<ExtArgs> | null
 }
