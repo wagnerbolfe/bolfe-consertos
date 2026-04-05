@@ -14,10 +14,12 @@ export async function GET(request: NextRequest) {
   const pageSize = Math.max(1, Number(searchParams.get("pageSize") ?? 10));
 
   const search = searchParams.get("search")?.trim() ?? "";
+  const clientId = searchParams.get("clientId");
 
-  const where = search
-    ? { client: { name: { contains: search, mode: "insensitive" as const } } }
-    : undefined;
+  const where = {
+    ...(clientId ? { clientId: BigInt(clientId) } : {}),
+    ...(search ? { client: { name: { contains: search, mode: "insensitive" as const } } } : {}),
+  };
 
   const [orders, total] = await Promise.all([
     prisma.orders.findMany({

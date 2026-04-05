@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import {
@@ -17,9 +16,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { authClient } from "@/lib/auth-client";
 
+const ADMIN_EMAIL = process.env.NEXT_PUBLIC_ADMIN_EMAIL!;
+
 export default function EntrarPage() {
   const router = useRouter();
-  const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [error, setError] = React.useState("");
   const [loading, setLoading] = React.useState(false);
@@ -29,10 +29,13 @@ export default function EntrarPage() {
     setError("");
     setLoading(true);
 
-    const { error } = await authClient.signIn.email({ email, password });
+    const { error } = await authClient.signIn.email({
+      email: ADMIN_EMAIL,
+      password,
+    });
 
     if (error) {
-      setError("E-mail ou senha inválidos.");
+      setError("Senha inválida.");
       setLoading(false);
       return;
     }
@@ -59,24 +62,11 @@ export default function EntrarPage() {
         <Card className="w-full">
           <CardHeader>
             <CardTitle className="text-xl">Entrar</CardTitle>
-            <CardDescription>Acesse sua conta para continuar</CardDescription>
+            <CardDescription>Digite sua senha para continuar</CardDescription>
           </CardHeader>
 
           <form onSubmit={handleSubmit}>
             <CardContent className="flex flex-col gap-4">
-              <div className="flex flex-col gap-1.5">
-                <Label htmlFor="email">E-mail</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="seu@email.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  autoComplete="email"
-                />
-              </div>
-
               <div className="flex flex-col gap-1.5">
                 <Label htmlFor="password">Senha</Label>
                 <Input
@@ -87,26 +77,17 @@ export default function EntrarPage() {
                   onChange={(e) => setPassword(e.target.value)}
                   required
                   autoComplete="current-password"
+                  autoFocus
                 />
               </div>
 
               {error && <p className="text-sm text-destructive">{error}</p>}
             </CardContent>
 
-            <CardFooter className="flex flex-col gap-3 border-t pt-6 mt-6">
+            <CardFooter className="border-t pt-6 mt-6">
               <Button type="submit" className="w-full" disabled={loading}>
                 {loading ? "Entrando..." : "Entrar"}
               </Button>
-
-              <p className="text-sm text-muted-foreground text-center">
-                Não tem uma conta?{" "}
-                <Link
-                  href="/cadastro"
-                  className="text-foreground font-medium hover:underline underline-offset-4"
-                >
-                  Cadastre-se
-                </Link>
-              </p>
             </CardFooter>
           </form>
         </Card>

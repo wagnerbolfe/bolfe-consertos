@@ -4,21 +4,25 @@ import * as React from "react";
 import { useParams, useRouter } from "next/navigation";
 import { ArrowLeftIcon } from "lucide-react";
 
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { SidebarInset, SidebarTrigger } from "@/components/ui/sidebar";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -30,6 +34,7 @@ type ClienteForm = {
   neighborhood: string;
   phone: string;
   mobile: string;
+  situation: string;
   createdAt: string;
 };
 
@@ -40,7 +45,13 @@ const EMPTY_FORM: ClienteForm = {
   neighborhood: "",
   phone: "",
   mobile: "",
+  situation: "Ativo",
   createdAt: "",
+};
+
+type LinkedData = {
+  washers: { id: string; description: string; brand: string; model: string }[];
+  orders: { id: string; device: string; brand: string; model: string; createdAt: string }[];
 };
 
 export default function ClientePage() {
@@ -52,6 +63,7 @@ export default function ClientePage() {
   const [loading, setLoading] = React.useState(true);
   const [saving, setSaving] = React.useState(false);
   const [deleting, setDeleting] = React.useState(false);
+  const [deleteModal, setDeleteModal] = React.useState<LinkedData | null>(null);
 
   React.useEffect(() => {
     if (!id) return;
@@ -69,6 +81,7 @@ export default function ClientePage() {
           neighborhood: data.neighborhood ?? "",
           phone: data.phone ?? "",
           mobile: data.mobile ?? "",
+          situation: data.situation ?? "Ativo",
           createdAt: data.createdAt ?? "",
         });
         setLoading(false);
@@ -84,14 +97,31 @@ export default function ClientePage() {
     if (!id) return;
     setSaving(true);
     try {
-      await fetch(`/api/clientes/${id}`, {
+      const res = await fetch(`/api/clientes/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
       });
+      if (res.ok) {
+        router.push("/dashboard/clientes");
+      }
     } finally {
       setSaving(false);
     }
+  }
+
+  async function handleDeleteClick() {
+    if (!id) return;
+    const [washersRes, ordersRes] = await Promise.all([
+      fetch(`/api/lavadoras?clientId=${id}&pageSize=1000`),
+      fetch(`/api/orders?clientId=${id}&pageSize=1000`),
+    ]);
+    const washersData = await washersRes.json();
+    const ordersData = await ordersRes.json();
+    setDeleteModal({
+      washers: washersData.washers ?? [],
+      orders: ordersData.orders ?? [],
+    });
   }
 
   async function handleDelete() {
@@ -102,8 +132,13 @@ export default function ClientePage() {
       router.push("/dashboard/clientes");
     } finally {
       setDeleting(false);
+      setDeleteModal(null);
     }
   }
+
+  const hasLinks =
+    deleteModal !== null &&
+    (deleteModal.washers.length > 0 || deleteModal.orders.length > 0);
 
   return (
     <SidebarInset>
@@ -127,28 +162,13 @@ export default function ClientePage() {
           <div className="flex items-center justify-between">
             <h1 className="text-2xl font-bold tracking-tight">Cliente #{id}</h1>
             <div className="flex gap-2">
-              <AlertDialog>
-                <AlertDialogTrigger asChild>
-                  <Button variant="destructive" disabled={deleting || loading}>
-                    {deleting ? "Excluindo..." : "Excluir"}
-                  </Button>
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>Excluir cliente?</AlertDialogTitle>
-                    <AlertDialogDescription>
-                      Esta ação não pode ser desfeita. O cliente será
-                      permanentemente removido.
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                    <AlertDialogAction onClick={handleDelete}>
-                      Excluir
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
+              <Button
+                variant="destructive"
+                disabled={deleting || loading}
+                onClick={handleDeleteClick}
+              >
+                {deleting ? "Excluindo..." : "Excluir"}
+              </Button>
               <Button onClick={handleSave} disabled={saving || loading}>
                 {saving ? "Salvando..." : "Salvar"}
               </Button>
@@ -227,6 +247,22 @@ export default function ClientePage() {
               </div>
 
               <div className="flex flex-col gap-2">
+                <Label htmlFor="situation">Situação</Label>
+                <Select
+                  value={form.situation}
+                  onValueChange={(v) => setForm((prev) => ({ ...prev, situation: v }))}
+                >
+                  <SelectTrigger id="situation">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Ativo">Ativo</SelectItem>
+                    <SelectItem value="Inativo">Inativo</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="flex flex-col gap-2">
                 <Label htmlFor="createdAt">Cadastrado em</Label>
                 <Input id="createdAt" value={form.createdAt} disabled />
               </div>
@@ -234,6 +270,53 @@ export default function ClientePage() {
           )}
         </Card>
       </div>
+
+      <Dialog open={deleteModal !== null} onOpenChange={(open) => { if (!open) setDeleteModal(null); }}>
+        <DialogContent className="max-w-lg">
+          <DialogHeader>
+            <DialogTitle>Excluir cliente?</DialogTitle>
+            <DialogDescription>
+              {hasLinks
+                ? "Este cliente possui registros vinculados. Tem certeza que deseja excluí-lo permanentemente?"
+                : "Esta ação não pode ser desfeita. O cliente será permanentemente removido."}
+            </DialogDescription>
+          </DialogHeader>
+
+          {hasLinks && (
+            <div className="flex flex-col gap-4 max-h-64 overflow-y-auto text-sm">
+              {deleteModal!.washers.length > 0 && (
+                <div className="flex flex-col gap-1">
+                  <p className="font-semibold">Lavadoras vinculadas ({deleteModal!.washers.length})</p>
+                  {deleteModal!.washers.map((w) => (
+                    <div key={w.id} className="rounded-md border px-3 py-2 text-muted-foreground">
+                      #{w.id} — {w.description || [w.brand, w.model].filter(Boolean).join(" ") || "Sem descrição"}
+                    </div>
+                  ))}
+                </div>
+              )}
+              {deleteModal!.orders.length > 0 && (
+                <div className="flex flex-col gap-1">
+                  <p className="font-semibold">Ordens vinculadas ({deleteModal!.orders.length})</p>
+                  {deleteModal!.orders.map((o) => (
+                    <div key={o.id} className="rounded-md border px-3 py-2 text-muted-foreground">
+                      #{o.id} — {[o.brand, o.model].filter(Boolean).join(" ") || o.device || "Sem descrição"} · {o.createdAt}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setDeleteModal(null)}>
+              Cancelar
+            </Button>
+            <Button variant="destructive" onClick={handleDelete} disabled={deleting}>
+              {deleting ? "Excluindo..." : "Excluir"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </SidebarInset>
   );
 }

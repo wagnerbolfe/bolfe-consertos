@@ -159,7 +159,7 @@ export default function OrdemPage() {
     setClientModalOpen(true);
     setClientSearch("");
     setClientsLoading(true);
-    fetch("/api/clientes?pageSize=1000")
+    fetch("/api/clientes?pageSize=1000&situation=ativo")
       .then((r) => r.json())
       .then((data) => {
         setClients(data.clientes);
@@ -180,7 +180,7 @@ export default function OrdemPage() {
   }
 
   function set(field: keyof OrderForm, value: string) {
-    setForm((prev) => ({ ...prev, [field]: value }));
+    setForm((prev) => ({ ...prev, [field]: value.toUpperCase() }));
   }
 
   async function handleSave() {

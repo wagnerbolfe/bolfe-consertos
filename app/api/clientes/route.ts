@@ -30,9 +30,19 @@ export async function GET(request: NextRequest) {
   const pageSize = Math.max(1, Number(searchParams.get("pageSize") ?? 10));
   const search = searchParams.get("search")?.trim() ?? "";
 
+  const situationParam = searchParams.get("situation");
+  const situationFilter =
+    situationParam === "ativo"
+      ? { situation: 0 }
+      : situationParam === "inativo"
+        ? { situation: 1 }
+        : {};
+
   const where = search
-    ? { name: { contains: search, mode: "insensitive" as const } }
-    : undefined;
+    ? { ...situationFilter, name: { contains: search, mode: "insensitive" as const } }
+    : Object.keys(situationFilter).length > 0
+      ? situationFilter
+      : undefined;
 
   const [clientes, total] = await Promise.all([
     prisma.clients.findMany({

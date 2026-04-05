@@ -39,6 +39,7 @@ export async function PUT(request: NextRequest, { params }: Params) {
       neighborhood: body.neighborhood || null,
       phone: body.phone || null,
       mobile: body.mobile || null,
+      situation: body.situation === "Inativo" ? 1 : 0,
     },
   });
 

@@ -74,7 +74,7 @@ export default function NovaLavadoraPage() {
   }
 
   function set(field: keyof WasherForm, value: string) {
-    setForm((prev) => ({ ...prev, [field]: value }));
+    setForm((prev) => ({ ...prev, [field]: value.toUpperCase() }));
   }
 
   async function handleSave() {

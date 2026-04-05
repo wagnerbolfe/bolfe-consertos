@@ -35,7 +35,7 @@ export default function NovoClientePage() {
   const [saving, setSaving] = React.useState(false);
 
   function set(field: keyof ClienteForm, value: string) {
-    setForm((prev) => ({ ...prev, [field]: value }));
+    setForm((prev) => ({ ...prev, [field]: value.toUpperCase() }));
   }
 
   async function handleSave() {
